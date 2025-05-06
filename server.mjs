@@ -1,20 +1,23 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import cors from "cors";
 dotenv.config();
 
 import Fruit from "./models/fruit.mjs";
 
-import fruits from './routes/fruits.mjs';
+import fruits from "./routes/fruits.mjs";
 
 const app = express();
 const port = process.env.PORT || 3000;
+// CORS
+app.use(cors());
 
 //for body parsing
-app.use(express.urlencoded({ extended:true}));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use("/fruits", fruits)
+app.use("/fruits", fruits);
 // Mongoose Connection
 mongoose.connect(process.env.ATLAS_URI);
 mongoose.connection.once("open", () => {
@@ -23,8 +26,6 @@ mongoose.connection.once("open", () => {
 
 // // mock data
 // const fruits = ["apple", "banana", "pear"];
-
-
 
 // Routes
 app.get("/", (req, res) => {
