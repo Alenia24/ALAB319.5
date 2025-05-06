@@ -1,7 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
-import dotenv from "dotenv";
 import cors from "cors";
+import dotenv from "dotenv";
 dotenv.config();
 
 import Fruit from "./models/fruit.mjs";
@@ -10,12 +10,13 @@ import fruits from "./routes/fruits.mjs";
 
 const app = express();
 const port = process.env.PORT || 3000;
-// CORS
-app.use(cors());
 
 //for body parsing
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+// CORS
+app.use(cors());
 
 app.use("/fruits", fruits);
 // Mongoose Connection
@@ -35,6 +36,7 @@ app.get("/", (req, res) => {
 // SEED the route(database)
 app.get("/fruits/seed", async (req, res) => {
   try {
+    await Fruit.deleteMany({});
     await Fruit.create([
       {
         name: "grapefruit",
